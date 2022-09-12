@@ -1,15 +1,12 @@
-import { ThemeProvider } from 'styled-components'
+import Layout from '../components/Layout/Layout'
 
-const theme = {
-  colors: {
-    primary: '#0070f3',
-  },
-}
-
-export default function App({ Component, pageProps }) {
+function MyApp({ Component, pageProps }) {
   return (
-    <ThemeProvider theme={theme}>
+    <Layout>
       <Component {...pageProps} />
-    </ThemeProvider>
+    </Layout>
   )
 }
+
+export default MyApp
+
