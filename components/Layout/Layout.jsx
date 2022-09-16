@@ -29,6 +29,12 @@ a {
 }
 `
 
+const Main = styled.main`
+  width: 86%;
+  max-width: 1200px;
+  margin: 120px auto 0;
+`
+
 
 function Layout({ children }) {
   const [ Theme, setTheme ] = useState('dark');
@@ -43,7 +49,7 @@ function Layout({ children }) {
     <ThemeProvider theme={Theme === 'light' ? lightmode : darkmode}>
       <GlobalStyle />
       <Navbar theme={Theme} themeToggle={themeToggle} />
-      <main>{children}</main>
+      <Main>{children}</Main>
     </ThemeProvider>
     </>
   )
