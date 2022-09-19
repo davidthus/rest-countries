@@ -40,9 +40,6 @@ const Grid = styled.div`
 `
 
 export default function Home({countries}) {
-
-  console.log(countries[0])
-
   return (
     <div>
       <Head>

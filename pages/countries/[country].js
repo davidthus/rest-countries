@@ -1,53 +1,62 @@
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
-// import styled from 'styled-components'
-import { Details } from "../../components";
+import React, { lazy, Suspense, useEffect, useState} from "react";
 import styled from "styled-components";
 
+const Details = lazy(() => import('../../components/Details/Details.jsx'));
+
 const HomeButton = styled.button`
-  padding: 1rem 1.5rem;
+  padding: 0.6rem 2.1rem;
   color: ${props => props.theme.text};
   background-color: ${props => props.theme.elements};
   cursor: pointer;
   border-radius: 5px;
-  font-size: 1.4rem;
+  font-size: 1rem;
   border: none;
+  font-weight: 400;
+  -webkit-box-shadow: 0px 0px 5px 3px rgba(0,0,0,0.2);
+  -moz-box-shadow: 0px 0px 5px 3px rgba(0,0,0,0.2);
+  box-shadow: 0px 0px 5px 3px rgba(0,0,0,0.2);
+  display: block;
+  margin-bottom: 4.5rem;
 `
 
 
 function CountryPage() {
   const router = useRouter();
   const { country } = router.query;
-  const [details, setDetails] = useState(null);
+  const [details, setDetails] = useState({});
+
+  const getCountry = async () => {
+    if(country){
+      console.log(country)
+      const response = await fetch(`https://restcountries.com/v3.1/alpha/${country}`)
+      const data = await response.json();
+      setDetails(data[0])
+    }
+  }
 
   useEffect(() => {
-    if (country) {
-      fetch(`https://restcountries.com/v3.1/alpha/${country}`)
-        .then((res) => {
-          return res.json();
-        })
-        .then((data) => {
-          setDetails(data[0]);
-        });
-    }
+    getCountry()
   }, [country]);
-
-  console.log(details);
 
   return (
     <div>
       <Head>
-        <title>{country}</title>
+        <title>{details?.name?.official || country}</title>
       </Head>
 
       <Link href={"/"}>
         <HomeButton>
-          Back
+          ← Back
         </HomeButton>
       </Link>
+      <Suspense fallback={<div>Loading...</div>}>
+        {Object.keys(details).length !== 0 && 
       <Details details={details} />
+        }
+      </Suspense>
 
     </div>
   );
