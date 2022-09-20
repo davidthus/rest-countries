@@ -20,6 +20,12 @@ const SearchBar = styled.div`
   align-items: center;
   margin-bottom: 8vmin;
   margin-inline: auto;
+
+  @media screen and (max-width: 800px) {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2rem;
+  }
 `;
 
 const Grid = styled.div`
