@@ -1,9 +1,23 @@
-import React from 'react'
+import React from "react";
+import { Container, Input } from "./Search.styles";
 
-function Search() {
+function Search({ dispatch, ACTIONS }) {
+  function handleChange(e) {
+    dispatch({
+      type: ACTIONS.SET_SEARCH,
+      payload: {
+        term: e.target.value,
+      },
+    });
+  }
+
   return (
-    <div>Search</div>
-  )
+    <Input
+      type="text"
+      placeholder="Search for a country..."
+      onChange={handleChange}
+    />
+  );
 }
 
-export default Search
+export default Search;

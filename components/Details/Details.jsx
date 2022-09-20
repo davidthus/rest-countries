@@ -2,14 +2,23 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRef } from "react";
 import {
-  BorderCountry, BorderKey, Column, Container, CountryHeading, DetailsContainer,
-  ImageContainer, InfoContainer, Key, Links, Row, Value, BorderValue
+  BorderCountry,
+  BorderKey,
+  BorderValue,
+  Column,
+  Container,
+  CountryHeading,
+  DetailsContainer,
+  ImageContainer,
+  InfoContainer,
+  Key,
+  Links,
+  Row,
+  Value,
 } from "./Details.styles";
 
 function Details({ details }) {
   const borderCountries = details.borders;
-  console.log(details.borders)
-  console.log(borderCountries)
 
   const formattedPopulation = useRef(
     details.population.toLocaleString("en-US")
@@ -32,15 +41,15 @@ function Details({ details }) {
     return string;
   }
 
-  function native(obj){
+  function native(obj) {
     let string = "";
     Object.entries(obj).map((item, index) => {
-      if(index === 0){
-          string += item[1].common
-        }
-    })
-      return string;
-    }
+      if (index === 0) {
+        string += item[1].common;
+      }
+    });
+    return string;
+  }
 
   return (
     <Container>
@@ -51,56 +60,55 @@ function Details({ details }) {
         <CountryHeading>{details.name.common}</CountryHeading>
         <InfoContainer>
           <Column>
-          <Row>
-            <Key>Native Name:</Key>
-            <Value>{native(details.name.nativeName)}</Value>
-          </Row>
-          <Row>
-            <Key>Population:</Key>
-            <Value>{formattedPopulation.current}</Value>
-          </Row>
-          <Row>
-            <Key>Region:</Key>
-            <Value>{details.region}</Value>
-          </Row>
-          <Row>
-            <Key>Sub Region:</Key>
-            <Value>{details.subregion}</Value>
-          </Row>
-          <Row>
-            <Key>Capital:</Key>
-            <Value>{details.capital[0]}</Value>
-          </Row>
+            <Row>
+              <Key>Native Name:</Key>
+              <Value>{native(details.name.nativeName)}</Value>
+            </Row>
+            <Row>
+              <Key>Population:</Key>
+              <Value>{formattedPopulation.current}</Value>
+            </Row>
+            <Row>
+              <Key>Region:</Key>
+              <Value>{details.region}</Value>
+            </Row>
+            <Row>
+              <Key>Sub Region:</Key>
+              <Value>{details.subregion}</Value>
+            </Row>
+            <Row>
+              <Key>Capital:</Key>
+              <Value>{details.capital[0]}</Value>
+            </Row>
           </Column>
           <Column>
-          <Row>
-            <Key>Top Level Domain:</Key>
-            <Value>{details.tld[0]}</Value>
-          </Row>
-          <Row>
-            <Key>Currencies:</Key>
-            <Value>{currencyName(details.currencies)}</Value>
-          </Row>
-          <Row>
-            <Key>Languages:</Key>
-            <Value>{valsToStr(details.languages)}</Value>
-          </Row>
+            <Row>
+              <Key>Top Level Domain:</Key>
+              <Value>{details.tld[0]}</Value>
+            </Row>
+            <Row>
+              <Key>Currencies:</Key>
+              <Value>{currencyName(details.currencies)}</Value>
+            </Row>
+            <Row>
+              <Key>Languages:</Key>
+              <Value>{valsToStr(details.languages)}</Value>
+            </Row>
           </Column>
         </InfoContainer>
-          <Links>
+        <Links>
           <BorderKey>Border Countries:</BorderKey>
-            <BorderValue>
-              {
-                borderCountries && borderCountries.map((item, index) => {
-                  return (
-                    <Link key={item} href={`/countries/${item}`}>
-                      <BorderCountry>{item}</BorderCountry>
-                    </Link>
-                  )
-                })
-              }
-              </BorderValue>
-          </Links>
+          <BorderValue>
+            {borderCountries &&
+              borderCountries.map((item, index) => {
+                return (
+                  <Link key={item} href={`/countries/${item}`}>
+                    <BorderCountry>{item}</BorderCountry>
+                  </Link>
+                );
+              })}
+          </BorderValue>
+        </Links>
       </DetailsContainer>
     </Container>
   );

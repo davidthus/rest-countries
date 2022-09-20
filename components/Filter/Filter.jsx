@@ -1,9 +1,30 @@
-import React from 'react'
+import React from "react";
+import { Select } from "./Filter.styles";
 
-function Filter() {
+function Filter({ dispatch, ACTIONS }) {
+  function handleChange(e) {
+    dispatch({
+      type: ACTIONS.SET_REGION,
+      payload: {
+        region: e.target.value,
+      },
+    });
+  }
+
   return (
-    <div>Filter</div>
-  )
+    <div>
+      <Select onChange={handleChange} defaultValue={""}>
+        <option value="" disabled hidden>
+          Filter by region
+        </option>
+        <option value="africa">Africa</option>
+        <option value="america">America</option>
+        <option value="asia">Asia</option>
+        <option value="europe">Europe</option>
+        <option value="oceania">Oceania</option>
+      </Select>
+    </div>
+  );
 }
 
-export default Filter
+export default Filter;

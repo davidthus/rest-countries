@@ -1,45 +1,74 @@
-import Head from 'next/head'
-import { Search, Filter } from '../components';
-import styled from 'styled-components';
-import { Suspense, lazy} from 'react';
+import Head from "next/head";
+import { lazy, Suspense, useReducer } from "react";
+import styled from "styled-components";
+import { Filter, Search } from "../components";
 
-const Country = lazy(() => import('../components/Country/Country'));
+const Country = lazy(() => import("../components/Country/Country"));
 
 const Container = styled.div`
   width: 100%;
-`
+`;
 const Loading = styled.p`
   color: red;
   font-weight: 800;
-`
+`;
 
 const SearchBar = styled.div`
   display: flex;
-  width: 100%;
+  width: 94%;
   justify-content: space-between;
   align-items: center;
-`
+  margin-bottom: 8vmin;
+  margin-inline: auto;
+`;
 
 const Grid = styled.div`
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   column-gap: 5%;
   row-gap: 3.5rem;
-  
-  @media screen and (max-width: 1200px){
+
+  @media screen and (max-width: 1200px) {
     grid-template-columns: repeat(3, 1fr);
   }
 
-  @media screen and (max-width: 950px){
+  @media screen and (max-width: 950px) {
     grid-template-columns: repeat(2, 1fr);
   }
 
-  @media screen and (max-width: 650px){
+  @media screen and (max-width: 650px) {
     grid-template-columns: repeat(1, 1fr);
   }
-`
+`;
 
-export default function Home({countries}) {
+function reducer(state, action) {
+  switch (action.type) {
+    case ACTIONS.SET_SEARCH:
+      return {
+        ...state,
+        searchTerm: action.payload.term,
+      };
+    case ACTIONS.SET_REGION:
+      return {
+        ...state,
+        region: action.payload.region,
+      };
+    default:
+      return state;
+  }
+}
+
+const ACTIONS = {
+  SET_SEARCH: "set-search",
+  SET_REGION: "set-region",
+};
+
+export default function Home({ countries }) {
+  const [state, dispatch] = useReducer(reducer, {
+    searchTerm: "",
+    region: "",
+  });
+
   return (
     <div>
       <Head>
@@ -48,33 +77,53 @@ export default function Home({countries}) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-
       <Container>
+        <SearchBar>
+          <Search dispatch={dispatch} ACTIONS={ACTIONS} />
+          <Filter dispatch={dispatch} ACTIONS={ACTIONS} />
+        </SearchBar>
 
-      <SearchBar>
-        <Search />
-        <Filter />
-      </SearchBar>
-
-      <Suspense fallback={<Loading>Loading...</Loading>}>
-      <Grid>
-      {
-        countries.map(country => {
-          return <Country key={country["cca3"]} country={country} />
-        })
-      }
-      </Grid>
-      </Suspense>
-
+        <Suspense fallback={<Loading>Loading...</Loading>}>
+          <Grid>
+            {countries
+              .filter((country) => {
+                if (state.region === "") {
+                  return country;
+                } else if (
+                  country.region
+                    .toLowerCase()
+                    .includes(state.region.toLowerCase())
+                ) {
+                  return country;
+                }
+              })
+              .filter((country) => {
+                if (state.searchTerm === "") {
+                  return country;
+                } else if (
+                  country.name.common
+                    .toLowerCase()
+                    .includes(state.searchTerm.toLowerCase())
+                ) {
+                  return country;
+                }
+              })
+              .map((country) => {
+                return <Country key={country["cca3"]} country={country} />;
+              })}
+          </Grid>
+        </Suspense>
       </Container>
     </div>
-  )
+  );
 }
 
 export async function getStaticProps() {
   // Call an external API endpoint to get countries.
-  const res = await fetch('https://restcountries.com/v3.1/all?fields=name,capital,population,region,cca3,flags')
-  const countries = await res.json()
+  const res = await fetch(
+    "https://restcountries.com/v3.1/all?fields=name,capital,population,region,cca3,flags"
+  );
+  const countries = await res.json();
 
   // By returning { props: { countries } }, the Home component
   // will receive `countries` as a prop at build time
@@ -82,5 +131,5 @@ export async function getStaticProps() {
     props: {
       countries,
     },
-  }
+  };
 }

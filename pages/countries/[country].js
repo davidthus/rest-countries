@@ -30,7 +30,6 @@ function CountryPage() {
 
   const getCountry = async () => {
     if(country){
-      console.log(country)
       const response = await fetch(`https://restcountries.com/v3.1/alpha/${country}`)
       const data = await response.json();
       setDetails(data[0])
