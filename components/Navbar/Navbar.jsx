@@ -1,31 +1,43 @@
-import Image from 'next/image';
-import { BsMoonFill, BsMoon } from "react-icons/bs";
+import Image from "next/image";
 import { IconContext } from "react-icons";
+import { BsMoon, BsMoonFill } from "react-icons/bs";
 import { FaMoon } from "react-icons/fa";
-import { Header, Nav, ToggleContainer, Heading, Button, Paragraph } from './Navbar.styles';
+import {
+  Button,
+  Header,
+  Heading,
+  Nav,
+  Paragraph,
+  ToggleContainer,
+} from "./Navbar.styles";
 
-function Navbar({ themeToggle, theme}) {
+function Navbar({ themeToggle, theme }) {
   return (
     <Header>
       <Nav>
         <Heading>Where in the world?</Heading>
         <ToggleContainer>
-          <Button onClick={themeToggle}>
-            { theme === 'light' ? <Moon color='hsl(200, 15%, 8%)' /> : <Moon color='hsl(0, 0%, 100%)' />}
+          <Button type="button" onClick={themeToggle}>
+            {theme === "light" ? (
+              <Moon color="hsl(200, 15%, 8%)" />
+            ) : (
+              <Moon color="hsl(0, 0%, 100%)" />
+            )}
+            {"  "}
+            Dark Mode
           </Button>
-          <Paragraph>Dark Mode</Paragraph>
         </ToggleContainer>
       </Nav>
     </Header>
-  )
+  );
 }
 
-function Moon({color}){
+function Moon({ color }) {
   return (
-    <IconContext.Provider value={{color: color, size: '16px'}}>
+    <IconContext.Provider value={{ color: color, size: "16px" }}>
       <BsMoonFill />
     </IconContext.Provider>
-  )
+  );
 }
 
 export default Navbar;

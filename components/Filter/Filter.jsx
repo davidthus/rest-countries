@@ -13,7 +13,11 @@ function Filter({ dispatch, ACTIONS }) {
 
   return (
     <div>
-      <Select onChange={handleChange} defaultValue={""}>
+      <Select
+        onChange={handleChange}
+        aria-label="Filter By Region"
+        defaultValue={""}
+      >
         <option value="" disabled hidden>
           Filter by region
         </option>

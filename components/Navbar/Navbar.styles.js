@@ -38,9 +38,17 @@ export const Button = styled.button`
   border: none;
   background: none;
   cursor: pointer;
+  font-weight: 600;
+  color: ${(props) => props.theme.text};
+  font-size: 1.1rem;
+
+  &:focus {
+    outline: 2px dotted ${(props) => props.theme.text};
+  }
 `;
 
 export const Paragraph = styled.p`
   font-weight: 600;
-  color: ${(props) => props.theme.text};
+  display: inline;
+  margin-left: 1rem;
 `;

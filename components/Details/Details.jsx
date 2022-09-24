@@ -54,7 +54,12 @@ function Details({ details }) {
   return (
     <Container>
       <ImageContainer>
-        <Image src={details.flags.png} width={600} height={400} />
+        <Image
+          src={details.flags.png}
+          alt={`The flag of ${details.name.common}`}
+          width={600}
+          height={400}
+        />
       </ImageContainer>
       <DetailsContainer>
         <CountryHeading>{details.name.common}</CountryHeading>
